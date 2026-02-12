@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KSA VAT & Wealth Tax Calculator</title>
+    
+    <script src="https://pl28703910.effectivegatecpm.com/af/e2/10/afe2106198b13e2addb4d9cbfc21db03.js"></script>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
@@ -29,7 +32,6 @@
         </div>
 
         <div class="p-8 pt-2">
-            
             <div id="vatContent" class="space-y-6">
                 <div>
                     <div class="flex justify-between items-end mb-2">
@@ -46,7 +48,6 @@
                     <div class="relative z-10">
                         <p id="vatLabel" class="text-slate-400 text-xs font-bold uppercase mb-1">Price Without Tax</p>
                         <p id="vatResultMain" class="text-5xl font-black tracking-tighter text-emerald-400">0.00 <span class="text-lg">SAR</span></p>
-                        
                         <div class="mt-6 pt-6 border-t border-slate-800 flex justify-between">
                             <div>
                                 <p class="text-slate-500 text-[10px] font-bold uppercase">VAT Amount (15%)</p>
@@ -64,7 +65,7 @@
             <div id="wealthContent" class="hidden space-y-6">
                 <div class="bg-blue-50 p-4 rounded-2xl border border-blue-100">
                     <p class="text-blue-800 text-[11px] font-semibold leading-relaxed">
-                        ℹ️ <strong>Note:</strong> Zakat is a 2.5% wealth tax paid annually on total savings, not on daily products.
+                        ℹ️ <strong>Note:</strong> Zakat is a 2.5% wealth tax paid annually on total savings.
                     </p>
                 </div>
                 <div>
@@ -78,7 +79,7 @@
             </div>
 
             <div class="pt-6 space-y-4">
-                <a href="https://wa.me/?text=Check%20out%20this%20professional%20KSA%20VAT%20Calculator:%20https://ksa-vat-tool.vercel.app" 
+                <a href="https://wa.me/?text=Check%20out%20this%20professional%20KSA%20VAT%20Calculator:%20https://ksa-vat-calculator.vercel.app" 
                    class="flex items-center justify-center gap-3 w-full py-4 bg-emerald-600 text-white rounded-2xl font-bold shadow-xl hover:bg-emerald-700 transition-all active:scale-95">
                    <span>📤</span> Share with Business
                 </a>
@@ -93,7 +94,6 @@
             const wContent = document.getElementById('wealthContent');
             const vTab = document.getElementById('vatTab');
             const wTab = document.getElementById('wealthTab');
-
             if(type === 'vat') {
                 vContent.classList.remove('hidden'); wContent.classList.add('hidden');
                 vTab.classList.add('active'); wTab.classList.remove('active'); wTab.classList.add('text-slate-500');
@@ -102,41 +102,27 @@
                 wTab.classList.add('active'); vTab.classList.remove('active'); vTab.classList.add('text-slate-500');
             }
         }
-
         function runVat() {
             const val = parseFloat(document.getElementById('vatInput').value) || 0;
             const mode = document.getElementById('vatMode').value;
             let net, vat, total;
-
             if(mode === 'remove') {
-                // If 25 SAR is the shelf price, find original
-                net = val / 1.15;
-                vat = val - net;
-                total = val;
+                net = val / 1.15; vat = val - net; total = val;
                 document.getElementById('vatLabel').innerText = "Original Price (Before Tax)";
                 document.getElementById('vatResultMain').innerHTML = `${net.toFixed(2)} <span class="text-lg">SAR</span>`;
             } else {
-                // If adding tax to 25 SAR
-                net = val;
-                vat = val * 0.15;
-                total = val + vat;
+                net = val; vat = val * 0.15; total = val + vat;
                 document.getElementById('vatLabel').innerText = "Total Including VAT";
                 document.getElementById('vatResultMain').innerHTML = `${total.toFixed(2)} <span class="text-lg">SAR</span>`;
             }
-
             document.getElementById('vatOnly').innerText = vat.toFixed(2);
             document.getElementById('vatFinal').innerText = total.toFixed(2);
         }
-
         function runWealth() {
             const val = parseFloat(document.getElementById('wealthInput').value) || 0;
             const zakat = val * 0.025;
             document.getElementById('wealthResult').innerHTML = `${zakat.toFixed(2)} <span class="text-lg uppercase">sar</span>`;
         }
     </script>
-
-   <script src="https://pl28703910.effectivegatecpm.com/af/e2/10/afe2106198b13e2addb4d9cbfc21db03.js"></script>
-
 </body>
 </html>
-
