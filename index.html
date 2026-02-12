@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KSA VAT & Profit Tool | Business Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #f8fafc; font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="p-4 md:p-10">
+
+    <div class="max-w-2xl mx-auto bg-white shadow-lg rounded-xl overflow-hidden border border-slate-200">
+        <div class="bg-slate-800 p-6 text-white">
+            <h1 class="text-2xl font-bold">KSA Business Calculator</h1>
+            <p class="text-slate-400 text-sm mt-1">VAT 15% Standard Rate | Profit Margin Analysis</p>
+        </div>
+
+        <div class="p-6 space-y-6">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Cost Price (SAR)</label>
+                    <input type="number" id="costPrice" placeholder="0.00" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none" oninput="calculate()">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-slate-700 mb-1">Selling Price (SAR)</label>
+                    <input type="number" id="sellingPrice" placeholder="0.00" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-500 outline-none" oninput="calculate()">
+                </div>
+            </div>
+
+            <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                <h2 class="text-sm font-bold text-slate-800 uppercase tracking-wide mb-4">Results</h2>
+                
+                <div class="space-y-3">
+                    <div class="flex justify-between text-slate-600">
+                        <span>VAT Amount (15%):</span>
+                        <span class="font-mono font-bold text-slate-900" id="vatAmount">0.00 SAR</span>
+                    </div>
+                    <div class="flex justify-between text-slate-600 border-b border-slate-200 pb-2">
+                        <span>Price Including VAT:</span>
+                        <span class="font-mono font-bold text-slate-900" id="totalWithVat">0.00 SAR</span>
+                    </div>
+                    <div class="flex justify-between pt-2">
+                        <span class="font-bold text-slate-800">Net Profit (Excl. VAT):</span>
+                        <span class="font-mono font-bold text-green-600 text-xl" id="netProfit">0.00 SAR</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-100 pt-6">
+                <h3 class="text-xs font-bold text-slate-400 uppercase mb-3 text-center tracking-widest">Recommended Business Tools</h3>
+                <div class="grid grid-cols-1 gap-3">
+                    <a href="#" class="flex items-center p-3 bg-white border border-slate-200 rounded-lg hover:border-slate-400 transition-all">
+                        <div class="bg-slate-100 p-2 rounded mr-3 text-xl">💻</div>
+                        <div>
+                            <p class="text-sm font-bold text-slate-800">Best Budget Invoicing Laptop</p>
+                            <p class="text-xs text-slate-500">Check price on Amazon.sa</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-slate-50 p-4 text-center border-t border-slate-200">
+            <p class="text-xs text-slate-400">Built by Zayam Hussain | Data based on ZATCA Standard 15% Rate</p>
+        </div>
+    </div>
+
+    <script>
+        function calculate() {
+            const cost = parseFloat(document.getElementById('costPrice').value) || 0;
+            const sell = parseFloat(document.getElementById('sellingPrice').value) || 0;
+            
+            // KSA VAT is 15% (0.15)
+            const vatRate = 0.15;
+            
+            const vatAmount = sell * vatRate;
+            const totalWithVat = sell + vatAmount;
+            const profit = sell - cost;
+
+            document.getElementById('vatAmount').innerText = vatAmount.toFixed(2) + ' SAR';
+            document.getElementById('totalWithVat').innerText = totalWithVat.toFixed(2) + ' SAR';
+            document.getElementById('netProfit').innerText = profit.toFixed(2) + ' SAR';
+        }
+    </script>
+</body>
+</html>
