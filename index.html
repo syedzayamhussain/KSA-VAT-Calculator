@@ -3,135 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KSA Business & VAT Pro</title>
+    <title>KSA VAT & Wealth Tax Calculator</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #f8fafc; font-family: 'Inter', sans-serif; }
-        .tab-active { border-bottom: 3px solid #059669; color: #059669; font-weight: 700; }
+        body { background-color: #f0f4f8; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .tab-btn.active { background: #059669; color: white; shadow: 0 10px 15px -3px rgba(5, 150, 105, 0.3); }
+        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); }
     </style>
 </head>
-<body class="p-4 md:p-10">
+<body class="p-4 md:p-12">
 
-    <div class="max-w-xl mx-auto bg-white shadow-2xl rounded-3xl overflow-hidden border border-slate-200">
-        <div class="bg-slate-900 p-8 text-white">
-            <h1 class="text-2xl font-extrabold tracking-tight">KSA Business Pro</h1>
-            <p class="text-slate-400 text-sm mt-1">Official 15% VAT & Zakat Standards</p>
+    <div class="max-w-xl mx-auto glass shadow-2xl rounded-[2.5rem] overflow-hidden border border-white">
+        <div class="bg-slate-900 p-8 text-center relative">
+            <div class="w-12 h-12 bg-emerald-500 rounded-xl mx-auto mb-3 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                <span class="text-white font-black text-xl">%</span>
+            </div>
+            <h1 class="text-white text-2xl font-800 tracking-tight">KSA TAX CALCULATOR</h1>
+            <p class="text-slate-400 text-[10px] uppercase font-bold tracking-[0.2em] mt-1">Official ZATCA 15% & 2.5% Rates</p>
         </div>
 
-        <div class="flex bg-slate-50 border-b border-slate-200">
-            <button onclick="switchTab('biz')" id="tabBiz" class="flex-1 py-4 text-sm uppercase tracking-wider tab-active transition-all">Business Mode</button>
-            <button onclick="switchTab('pers')" id="tabPers" class="flex-1 py-4 text-sm uppercase tracking-wider text-slate-500 hover:text-slate-700 transition-all">Shopper Mode</button>
+        <div class="flex p-2 bg-slate-100/50 m-6 rounded-2xl gap-2">
+            <button onclick="switchTab('vat')" id="vatTab" class="tab-btn active flex-1 py-3 text-sm font-bold rounded-xl transition-all">VAT (Product Tax)</button>
+            <button onclick="switchTab('wealth')" id="wealthTab" class="tab-btn flex-1 py-3 text-sm font-bold text-slate-500 rounded-xl transition-all">Wealth (Zakat)</button>
         </div>
 
-        <div class="p-6 md:p-8 space-y-6">
+        <div class="p-8 pt-2">
             
-            <div id="bizContent" class="space-y-6">
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Cost Price (SAR)</label>
-                        <input type="number" id="costPrice" placeholder="0.00" class="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl text-lg font-semibold focus:border-emerald-500 outline-none transition-all" oninput="calculateBiz()">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Selling Price (SAR)</label>
-                        <input type="number" id="sellPrice" placeholder="0.00" class="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl text-lg font-semibold focus:border-emerald-500 outline-none transition-all" oninput="calculateBiz()">
-                    </div>
-                </div>
-
-                <div class="bg-emerald-50 rounded-2xl p-6 border border-emerald-100">
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center">
-                            <span class="text-emerald-700 font-medium">VAT to ZATCA (15%):</span>
-                            <span id="bizVat" class="text-xl font-bold text-emerald-900">0.00 SAR</span>
-                        </div>
-                        <div class="flex justify-between items-center border-t border-emerald-200 pt-4">
-                            <span class="text-emerald-800 font-bold text-lg">Net Profit:</span>
-                            <span id="bizProfit" class="text-3xl font-black text-emerald-600 tracking-tighter">0.00 SAR</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="persContent" class="hidden space-y-6">
+            <div id="vatContent" class="space-y-6">
                 <div>
-                    <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Shelf Price (Inc. VAT)</label>
-                    <input type="number" id="shelfPrice" placeholder="0.00" class="w-full p-4 bg-white border-2 border-slate-200 rounded-2xl text-2xl font-bold focus:border-blue-500 outline-none transition-all" oninput="calculatePers()">
+                    <div class="flex justify-between items-end mb-2">
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Enter Product Price (SAR)</label>
+                        <select id="vatMode" class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md outline-none" onchange="runVat()">
+                            <option value="remove">Price Includes VAT</option>
+                            <option value="add">Price Excludes VAT</option>
+                        </select>
+                    </div>
+                    <input type="number" id="vatInput" placeholder="e.g. 25" class="w-full p-5 bg-white border-2 border-slate-100 rounded-2xl text-2xl font-bold focus:border-emerald-500 outline-none shadow-sm" oninput="runVat()">
                 </div>
-                <div class="bg-blue-50 rounded-2xl p-6 border border-blue-100">
-                    <p class="text-blue-700 text-xs font-bold uppercase mb-1">Real Value (Price without Tax)</p>
-                    <p id="netValue" class="text-4xl font-black text-blue-900 tracking-tighter">0.00 SAR</p>
-                    <p class="text-blue-600 text-sm mt-2">VAT you paid: <span id="vatPaid" class="font-bold">0.00</span> SAR</p>
+
+                <div class="bg-slate-900 rounded-[2rem] p-8 text-white relative overflow-hidden">
+                    <div class="relative z-10">
+                        <p id="vatLabel" class="text-slate-400 text-xs font-bold uppercase mb-1">Price Without Tax</p>
+                        <p id="vatResultMain" class="text-5xl font-black tracking-tighter text-emerald-400">0.00 <span class="text-lg">SAR</span></p>
+                        
+                        <div class="mt-6 pt-6 border-t border-slate-800 flex justify-between">
+                            <div>
+                                <p class="text-slate-500 text-[10px] font-bold uppercase">VAT Amount (15%)</p>
+                                <p id="vatOnly" class="text-xl font-bold">0.00</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-slate-500 text-[10px] font-bold uppercase">Final Total</p>
+                                <p id="vatFinal" class="text-xl font-bold">0.00</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="bg-amber-50 rounded-2xl p-5 border border-amber-100 flex justify-between items-center">
+            <div id="wealthContent" class="hidden space-y-6">
+                <div class="bg-blue-50 p-4 rounded-2xl border border-blue-100">
+                    <p class="text-blue-800 text-[11px] font-semibold leading-relaxed">
+                        ℹ️ <strong>Note:</strong> Zakat is a 2.5% wealth tax paid annually on total savings, not on daily products.
+                    </p>
+                </div>
                 <div>
-                    <h4 class="text-amber-800 font-bold text-sm">Zakat Estimator</h4>
-                    <p class="text-amber-600 text-[10px] uppercase font-bold tracking-widest leading-none">2.5% on Wealth</p>
+                    <label class="block text-[10px] font-black text-slate-400 uppercase mb-2 ml-1">Total Savings / Gold / Assets</label>
+                    <input type="number" id="wealthInput" placeholder="Total Wealth" class="w-full p-5 bg-white border-2 border-slate-100 rounded-2xl text-2xl font-bold focus:border-blue-500 outline-none shadow-sm" oninput="runWealth()">
                 </div>
-                <span id="zakatResult" class="text-xl font-bold text-amber-900 font-mono">0.00 SAR</span>
+                <div class="bg-blue-600 rounded-[2rem] p-8 text-white shadow-xl text-center">
+                    <p class="text-blue-100 text-xs font-bold uppercase tracking-widest mb-2">Your Annual Zakat Due (2.5%)</p>
+                    <p id="wealthResult" class="text-5xl font-black">0.00 <span class="text-lg uppercase">sar</span></p>
+                </div>
             </div>
 
-            <div class="space-y-4 pt-4">
-                <a href="https://wa.me/?text=Check%20out%20this%20KSA%20VAT%20and%20Profit%20Calculator!%20Business%20Pro%20Tool:%20https://ksa-vat-tool.vercel.app" 
-                   class="flex items-center justify-center gap-2 w-full py-4 bg-[#25D366] text-white rounded-2xl font-bold shadow-lg hover:shadow-xl transition-all active:scale-95">
-                   <span>🟢</span> Share with Business Partners
+            <div class="pt-6 space-y-4">
+                <a href="https://wa.me/?text=Check%20out%20this%20professional%20KSA%20VAT%20Calculator:%20https://ksa-vat-tool.vercel.app" 
+                   class="flex items-center justify-center gap-3 w-full py-4 bg-emerald-600 text-white rounded-2xl font-bold shadow-xl hover:bg-emerald-700 transition-all active:scale-95">
+                   <span>📤</span> Share with Business
                 </a>
-                
-                <div class="text-center">
-                    <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mb-2">Recommended for KSA Entrepreneurs</p>
-                    <a href="#" class="text-xs text-blue-600 font-bold hover:underline">Best Office Laptops in Saudi Arabia →</a>
-                </div>
+                <p class="text-[9px] text-center text-slate-400 font-bold uppercase tracking-widest leading-none">Developed by Zayam Hussain • 2026 Version</p>
             </div>
-        </div>
-
-        <div class="p-4 bg-slate-50 text-center border-t border-slate-100">
-            <p class="text-[9px] text-slate-400 font-bold">ZAYAM HUSSAIN | POWERED BY VERCEL</p>
         </div>
     </div>
 
     <script>
-        function switchTab(tab) {
-            const biz = document.getElementById('bizContent');
-            const pers = document.getElementById('persContent');
-            const tBiz = document.getElementById('tabBiz');
-            const tPers = document.getElementById('tabPers');
+        function switchTab(type) {
+            const vContent = document.getElementById('vatContent');
+            const wContent = document.getElementById('wealthContent');
+            const vTab = document.getElementById('vatTab');
+            const wTab = document.getElementById('wealthTab');
 
-            if (tab === 'biz') {
-                biz.classList.remove('hidden');
-                pers.classList.add('hidden');
-                tBiz.classList.add('tab-active');
-                tPers.classList.remove('tab-active');
-                tPers.classList.add('text-slate-500');
+            if(type === 'vat') {
+                vContent.classList.remove('hidden'); wContent.classList.add('hidden');
+                vTab.classList.add('active'); wTab.classList.remove('active'); wTab.classList.add('text-slate-500');
             } else {
-                biz.classList.add('hidden');
-                pers.classList.remove('hidden');
-                tPers.classList.add('tab-active');
-                tBiz.classList.remove('tab-active');
-                tBiz.classList.add('text-slate-500');
+                wContent.classList.remove('hidden'); vContent.classList.add('hidden');
+                wTab.classList.add('active'); vTab.classList.remove('active'); vTab.classList.add('text-slate-500');
             }
         }
 
-        function calculateBiz() {
-            const cost = parseFloat(document.getElementById('costPrice').value) || 0;
-            const sell = parseFloat(document.getElementById('sellPrice').value) || 0;
-            
-            const vat = sell * 0.15;
-            const profit = (sell - cost); // Net profit before tax? Business owners usually look at Gross Profit minus VAT liability.
-            
-            document.getElementById('bizVat').innerText = vat.toFixed(2) + ' SAR';
-            document.getElementById('bizProfit').innerText = profit.toFixed(2) + ' SAR';
-            document.getElementById('zakatResult').innerText = (sell * 0.025).toFixed(2) + ' SAR';
+        function runVat() {
+            const val = parseFloat(document.getElementById('vatInput').value) || 0;
+            const mode = document.getElementById('vatMode').value;
+            let net, vat, total;
+
+            if(mode === 'remove') {
+                // If 25 SAR is the shelf price, find original
+                net = val / 1.15;
+                vat = val - net;
+                total = val;
+                document.getElementById('vatLabel').innerText = "Original Price (Before Tax)";
+                document.getElementById('vatResultMain').innerHTML = `${net.toFixed(2)} <span class="text-lg">SAR</span>`;
+            } else {
+                // If adding tax to 25 SAR
+                net = val;
+                vat = val * 0.15;
+                total = val + vat;
+                document.getElementById('vatLabel').innerText = "Total Including VAT";
+                document.getElementById('vatResultMain').innerHTML = `${total.toFixed(2)} <span class="text-lg">SAR</span>`;
+            }
+
+            document.getElementById('vatOnly').innerText = vat.toFixed(2);
+            document.getElementById('vatFinal').innerText = total.toFixed(2);
         }
 
-        function calculatePers() {
-            const price = parseFloat(document.getElementById('shelfPrice').value) || 0;
-            const net = price / 1.15;
-            const vat = price - net;
-            
-            document.getElementById('netValue').innerText = net.toFixed(2) + ' SAR';
-            document.getElementById('vatPaid').innerText = vat.toFixed(2);
-            document.getElementById('zakatResult').innerText = (price * 0.025).toFixed(2) + ' SAR';
+        function runWealth() {
+            const val = parseFloat(document.getElementById('wealthInput').value) || 0;
+            const zakat = val * 0.025;
+            document.getElementById('wealthResult').innerHTML = `${zakat.toFixed(2)} <span class="text-lg uppercase">sar</span>`;
         }
     </script>
 
